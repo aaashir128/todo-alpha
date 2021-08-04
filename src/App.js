@@ -8,23 +8,29 @@ import {
 import { useEffect, useState } from "react";
 import "./App.css";
 import db from "./config/firebase";
+import firebase from "firebase";
 import Todo from "./Todo.jsx";
 
 function App() {
-  const [todos, setTodos] = useState(['breakfast', 'running']);
+  const [todos, setTodos] = useState(["breakfast", "running"]);
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    db.collection("todos").onSnapshot((snapshot) => {
-      setTodos(snapshot.docs.map((doc) => doc.data().todo));
+    db.collection("todos").orderBy('timestamp', 'asc').onSnapshot((snapshot) => {
+      setTodos(snapshot.docs.map((doc) => doc.data()));
     });
   }, []);
 
   const addTodo = (e) => {
     e.preventDefault();
 
+    db.collection("todos").add({
+      todo: input,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
     setTodos([...todos, input]);
-    setInput('')
+    setInput("");
   };
 
   return (
@@ -48,7 +54,7 @@ function App() {
 
       <ul>
         {todos.map((todo, id) => (
-          <Todo key={id} text={todo} />
+          <Todo key={id} text={todo.todo} timestamp={todo.timestamp} />
         ))}
       </ul>
     </div>

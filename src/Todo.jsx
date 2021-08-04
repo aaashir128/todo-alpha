@@ -7,12 +7,12 @@ import {
 import React from "react";
 import "./Todo.css";
 
-function Todos({ text }) {
+function Todos({ text, timestamp }) {
   return (
     <List className="todo__list">
       <ListItem>
         <ListItemAvatar></ListItemAvatar>
-        <ListItemText primary={text} secondary="Deadline ..." />
+        <ListItemText primary={text} secondary={new Date(timestamp?.toDate()).toLocaleTimeString()} />
       </ListItem>
     </List>
   );
