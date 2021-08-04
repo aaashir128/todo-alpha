@@ -11,7 +11,7 @@ import db from "./config/firebase";
 import Todo from "./Todo.jsx";
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(['breakfast', 'running']);
   const [input, setInput] = useState("");
 
   useEffect(() => {
